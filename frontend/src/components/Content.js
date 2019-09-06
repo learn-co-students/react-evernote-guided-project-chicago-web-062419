@@ -14,18 +14,26 @@ class Content extends Component {
   constructor(props){
     super()
     this.state ={
-      currentNote: {}
+      currentNote: {} , 
+      editingNote: false
     }
   }
   renderContent = () => {
-    if(false){
-      return <NoteEditor />;
-    } else if (Object.keys(this.props.currentNote).length !== 0 ) {
-      console.log(this.props.currentNote)
-      return <NoteViewer currentNote={this.props.currentNote}/>;
+    if(this.state.editingNote && this.isNotePopulated()){
+      return <NoteEditor/>;
+    } else if (this.isNotePopulated()) {
+      return <NoteViewer currentNote={this.props.currentNote} editNote={this.editNote}/>;
     } else {
       return <Instructions />;
     }
+  }
+
+  editNote = () =>{
+    this.setState({editingNote : true})
+  }
+
+  isNotePopulated = () =>{
+    return Object.keys(this.props.currentNote).length !== 0 
   }
 
   componentDidMount(){
@@ -33,8 +41,6 @@ class Content extends Component {
   }
 
   componentDidUpdate(prevState){
-    console.log('Content has updated')
-    console.log(this.state.currentNote)
       if(this.state.currentNote !== prevState.currentNote)
         this.setState({currentNote: this.props.currentNote})
   }

@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class NoteEditor extends Component {
   render() {
+    console.log("I have rendered");
     return (
       <form className="note-editor">
         <input type="text" name="title" />
