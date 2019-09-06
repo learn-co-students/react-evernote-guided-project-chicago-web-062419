@@ -20,7 +20,7 @@ class Content extends Component {
   }
   renderContent = () => {
     if(this.state.editingNote && this.isNotePopulated()){
-      return <NoteEditor/>;
+      return <NoteEditor currentNote={this.props.currentNote}/>;
     } else if (this.isNotePopulated()) {
       return <NoteViewer currentNote={this.props.currentNote} editNote={this.editNote}/>;
     } else {
