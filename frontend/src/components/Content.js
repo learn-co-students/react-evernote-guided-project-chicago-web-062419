@@ -11,14 +11,32 @@ import Instructions from './Instructions';
           refactor to get this Content component to work.
 */
 class Content extends Component {
+  constructor(props){
+    super()
+    this.state ={
+      currentNote: {}
+    }
+  }
   renderContent = () => {
-    if (false) {
+    if(false){
       return <NoteEditor />;
-    } else if (false) {
-      return <NoteViewer />;
+    } else if (Object.keys(this.props.currentNote).length !== 0 ) {
+      console.log(this.props.currentNote)
+      return <NoteViewer currentNote={this.props.currentNote}/>;
     } else {
       return <Instructions />;
     }
+  }
+
+  componentDidMount(){
+    this.setState({currentNote: this.props.currentNote})
+  }
+
+  componentDidUpdate(prevState){
+    console.log('Content has updated')
+    console.log(this.state.currentNote)
+      if(this.state.currentNote !== prevState.currentNote)
+        this.setState({currentNote: this.props.currentNote})
   }
 
   render() {
