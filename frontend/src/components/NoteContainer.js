@@ -54,14 +54,6 @@ class NoteContainer extends Component {
       });
   };
 
-  editNote = () => {
-    this.setState({ editingNote: true });
-  };
-
-  stopEditNote = () => {
-    this.setState({ editingNote: false });
-  };
-
   // POST fetch request for creating a new note
   createNewNote = () => {
     fetch("http://localhost:3000/api/v1/notes", {
@@ -71,8 +63,8 @@ class NoteContainer extends Component {
         Accept: "application/json"
       },
       body: {
-        title: this.currentNote.title,
-        body: this.currentNote.body
+        title: 'Title!',
+        body: 'Your text goes here...'
       }
     })
       .then(resp => {
@@ -82,6 +74,14 @@ class NoteContainer extends Component {
         this.setState({ currentNote: {} });
         this.getNotes();
       });
+  };
+
+  editNote = () => {
+    this.setState({ editingNote: true });
+  };
+
+  stopEditNote = () => {
+    this.setState({ editingNote: false });
   };
 
   componentDidMount() {
@@ -105,6 +105,8 @@ class NoteContainer extends Component {
           <Sidebar
             notes={this.state.notes}
             setSelectedNote={this.setSelectedNote}
+            stopEditNote={this.stopEditNote}
+            editingNote={this.state.editingNote}
           />
           <Content
             currentNote={this.state.currentNote}
