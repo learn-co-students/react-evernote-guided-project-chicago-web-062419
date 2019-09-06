@@ -8,7 +8,8 @@ class NoteContainer extends Component {
     super();
     this.state = {
       notes: [],
-      currentNote: {}
+      currentNote: {},
+      editingNote: false
     };
   }
   // this should save the state between the sidebar and the content panels
@@ -25,8 +26,6 @@ class NoteContainer extends Component {
 
   // PATCH fetch request for updating a note, takes in the ID
   saveEditedNote = changedNoteObj => {
-    console.log("===Patching Note===");
-    console.log(changedNoteObj);
     fetch("http://localhost:3000/api/v1/notes/" + this.state.currentNote.id, {
       method: "PATCH",
       headers: {
@@ -37,15 +36,30 @@ class NoteContainer extends Component {
         title: changedNoteObj.title,
         body: changedNoteObj.body
       })
-        .then(resp => {
-          return resp.json();
-        })
-        .then(json => {
-          //this should update selected Note without clearing out the currentNote obj
-          console.log("updated");
-          console.log(json);
-        })
-    });
+    })
+      .then(resp => {
+        return resp.json();
+      })
+      .then(json => {
+        console.log(json);
+        this.setState({
+          currentNote: {
+            ...this.state.currentNote,
+            title: changedNoteObj.title,
+            body: changedNoteObj.body
+          },
+          editingNote: false
+        });
+        this.getNotes();
+      });
+  };
+
+  editNote = () => {
+    this.setState({ editingNote: true });
+  };
+
+  stopEditNote = () => {
+    this.setState({ editingNote: false });
   };
 
   // POST fetch request for creating a new note
@@ -66,8 +80,7 @@ class NoteContainer extends Component {
       })
       .then(() => {
         this.setState({ currentNote: {} });
-        // this should set the state, causing a rerender
-        // the following re-render should cause the new article to appear
+        this.getNotes();
       });
   };
 
@@ -96,6 +109,9 @@ class NoteContainer extends Component {
           <Content
             currentNote={this.state.currentNote}
             saveEditedNote={this.saveEditedNote}
+            editingNote={this.state.editingNote}
+            editNote={this.editNote}
+            stopEditNote={this.stopEditNote}
           />
         </div>
       </Fragment>

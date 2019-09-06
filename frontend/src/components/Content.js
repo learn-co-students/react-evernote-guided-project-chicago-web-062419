@@ -15,29 +15,31 @@ class Content extends Component {
     super(props);
     this.state = {
       currentNote: {},
-      editingNote: false
     };
   }
   renderContent = () => {
-    if (this.state.editingNote && this.isNotePopulated()) {
+    console.log(this.props)
+    if (this.props.editingNote && this.isNotePopulated()) {
       // if the note is blank AND the state is set to edit-mode
-      return <NoteEditor currentNote={this.props.currentNote} />;
+      return (
+        <NoteEditor
+          currentNote={this.props.currentNote}
+          saveEditedNote={this.props.saveEditedNote}
+          stopEditNote={this.stopEditNote}
+        />
+      );
     } else if (this.isNotePopulated()) {
       // if the note is populated and note being edited
       return (
         <NoteViewer
           currentNote={this.props.currentNote}
-          editNote={this.editNote}
+          editNote={this.props.editNote}
         />
       );
     } else {
       // default render
       return <Instructions />;
     }
-  };
-
-  editNote = () => {
-    this.setState({ editingNote: true });
   };
 
   isNotePopulated = () => {

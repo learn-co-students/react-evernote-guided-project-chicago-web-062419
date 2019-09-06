@@ -11,11 +11,13 @@ class NoteEditor extends Component {
   handleSubmit = event => {
     event.preventDefault();
     console.log(this.state);
+    const saveChanges = this.props.saveEditedNote // set this with deconstruction later
+    saveChanges(this.state)
   };
 
   handleChange = event => {
     this.setState({
-      [event.target.name]: [event.target.value]
+      [event.target.name]: event.target.value
     });
   };
 
