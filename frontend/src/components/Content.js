@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import NoteEditor from './NoteEditor';
-import NoteViewer from './NoteViewer';
-import Instructions from './Instructions';
+import React, { Component } from "react";
+import NoteEditor from "./NoteEditor";
+import NoteViewer from "./NoteViewer";
+import Instructions from "./Instructions";
 
 /*
   Advice: If you cannot figure out how to get this component to work,
@@ -11,45 +11,51 @@ import Instructions from './Instructions';
           refactor to get this Content component to work.
 */
 class Content extends Component {
-  constructor(props){
-    super()
-    this.state ={
-      currentNote: {} , 
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentNote: {},
       editingNote: false
-    }
+    };
   }
   renderContent = () => {
-    if(this.state.editingNote && this.isNotePopulated()){
-      return <NoteEditor currentNote={this.props.currentNote}/>;
+    if (this.state.editingNote && this.isNotePopulated()) {
+      // if the note is blank AND the state is set to edit-mode
+      return <NoteEditor currentNote={this.props.currentNote} />;
     } else if (this.isNotePopulated()) {
-      return <NoteViewer currentNote={this.props.currentNote} editNote={this.editNote}/>;
+      // if the note is populated and note being edited
+      return (
+        <NoteViewer
+          currentNote={this.props.currentNote}
+          editNote={this.editNote}
+        />
+      );
     } else {
+      // default render
       return <Instructions />;
     }
+  };
+
+  editNote = () => {
+    this.setState({ editingNote: true });
+  };
+
+  isNotePopulated = () => {
+    return Object.keys(this.props.currentNote).length !== 0;
+  };
+
+  componentDidMount() {
+    this.setState({ currentNote: this.props.currentNote });
   }
 
-  editNote = () =>{
-    this.setState({editingNote : true})
-  }
-
-  isNotePopulated = () =>{
-    return Object.keys(this.props.currentNote).length !== 0 
-  }
-
-  componentDidMount(){
-    this.setState({currentNote: this.props.currentNote})
-  }
-
-  componentDidUpdate(prevState){
-      if(this.state.currentNote !== prevState.currentNote)
-        this.setState({currentNote: this.props.currentNote})
+  componentDidUpdate(prevState) {
+    if (this.state.currentNote !== prevState.currentNote)
+      this.setState({ currentNote: this.props.currentNote });
   }
 
   render() {
     return (
-      <div className='master-detail-element detail'>
-        {this.renderContent()}
-      </div>
+      <div className="master-detail-element detail">{this.renderContent()}</div>
     );
   }
 }
