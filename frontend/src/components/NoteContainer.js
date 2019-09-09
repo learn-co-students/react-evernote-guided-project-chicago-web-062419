@@ -8,25 +8,30 @@ class NoteContainer extends Component {
     super();
     this.state = {
       notes: [],
+      allNotes: [],
       currentNote: {},
-      editingNote: false ,
-      user:{  // this can be used later when logging in is a thing
-        id: 1 ,
-        name: 'flatironschool'
+      editingNote: false,
+      user: {
+        // this can be used later when logging in is a thing
+        id: 1,
+        name: "flatironschool"
       },
-      searchQuery: ''
-
+      searchQuery: ""
     };
   }
-  // this should save the state between the sidebar and the content panels
 
+  filterSearchResults = () =>{
+
+  }
+  // #region FETCH requests
   getNotes = () => {
     fetch("http://localhost:3000/api/v1/notes")
       .then(resp => {
         return resp.json();
       })
       .then(json => {
-        this.setState({ notes: json });
+        // filter stuff here
+        this.setState({ notes: json , allNotes: json });
       });
   };
 
@@ -84,7 +89,6 @@ class NoteContainer extends Component {
   };
 
   deleteNote = () => {
-    console.log("Deleting Note");
     fetch("http://localhost:3000/api/v1/notes/" + this.state.currentNote.id, {
       method: "DELETE",
       headers: {
@@ -93,7 +97,6 @@ class NoteContainer extends Component {
       }
     })
       .then(resp => {
-        console.log("Deleting note");
         return resp.json();
       })
       .then(() => {
@@ -101,11 +104,17 @@ class NoteContainer extends Component {
         this.getNotes();
       });
   };
+  // #endregion
 
-  handleSearchQuery = (myQuery) =>{
-    this.setState({searchQuery: myQuery})
-    // do filtering here
-  }
+  // #region state-handlers
+  handleSearchQuery = myQuery => {
+    // this.setState({ searchQuery: myQuery });
+    // // do filtering here
+    //console.log(this.state.searchQuery)
+    this.setState({notes: this.state.allNotes.filter(note =>{
+      return note.title.toLowerCase().includes(myQuery) || note.body.toLowerCase().includes(myQuery)
+    })})
+  };
 
   editNote = () => {
     this.setState({ editingNote: true });
@@ -115,23 +124,27 @@ class NoteContainer extends Component {
     this.setState({ editingNote: false });
   };
 
+  setSelectedNote = note => {
+    this.setState({ currentNote: note }); // changes the displayed note in the Content
+  };
+  //#endregion
+
+  // #region Lifecycle Methods
   componentDidMount() {
     this.getNotes(); // get notes when the component mounts
   }
 
-  setSelectedNote = note => {
-    this.setState({ currentNote: note }); // changes the displayed note in the Content
-  };
-
   componentDidUpdate(prevState) {
     console.log("Note Container has updated");
-    console.log(this.state.currentNote);
+    //console.log(this.state.currentNote);
   }
+  //#endregion
+
 
   render() {
     return (
       <Fragment>
-        <Search handleSearchQuery={this.handleSearchQuery}/>
+        <Search handleSearchQuery={this.handleSearchQuery} />
         <div className="container">
           <Sidebar
             notes={this.state.notes}

@@ -18,7 +18,7 @@ class Content extends Component {
     };
   }
   renderContent = () => {
-    console.log(this.props)
+    //console.log(this.props)
     if (this.props.editingNote && this.isNotePopulated()) {
       // if the note is blank AND the state is set to edit-mode
       return (
