@@ -13,7 +13,9 @@ class NoteContainer extends Component {
       user:{  // this can be used later when logging in is a thing
         id: 1 ,
         name: 'flatironschool'
-      }
+      },
+      searchQuery: ''
+
     };
   }
   // this should save the state between the sidebar and the content panels
@@ -100,6 +102,11 @@ class NoteContainer extends Component {
       });
   };
 
+  handleSearchQuery = (myQuery) =>{
+    this.setState({searchQuery: myQuery})
+    // do filtering here
+  }
+
   editNote = () => {
     this.setState({ editingNote: true });
   };
@@ -124,7 +131,7 @@ class NoteContainer extends Component {
   render() {
     return (
       <Fragment>
-        <Search />
+        <Search handleSearchQuery={this.handleSearchQuery}/>
         <div className="container">
           <Sidebar
             notes={this.state.notes}
