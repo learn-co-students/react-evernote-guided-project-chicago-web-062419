@@ -9,6 +9,11 @@ class Sidebar extends Component {
     };
   }
 
+  handleCreateNew = () =>{
+    const createNewNote = this.props.createNewNote
+    createNewNote();
+  }
+
   // the new button needs an onClick to create a new note
   render() {
     //console.log(this.props)
@@ -19,7 +24,7 @@ class Sidebar extends Component {
           setSelectedNote={this.props.setSelectedNote}
           stopEditNote={this.props.stopEditNote}
         />
-        <button>New</button>
+        <button onClick={this.handleCreateNew}>New</button>
       </div>
     );
   }

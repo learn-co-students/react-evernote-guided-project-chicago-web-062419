@@ -10,8 +10,8 @@ class NoteEditor extends Component {
   }
   handleSubmit = event => {
     event.preventDefault();
-    console.log(this.state);
-    const saveChanges = this.props.saveEditedNote // set this with deconstruction later
+   // console.log(this.state);
+    const saveChanges = this.props.saveEditedNote // set this with deconstruction later?
     saveChanges(this.state)
   };
 
@@ -20,6 +20,11 @@ class NoteEditor extends Component {
       [event.target.name]: event.target.value
     });
   };
+
+  handleCancel = () =>{
+    const stopEditing = this.props.stopEditNote;
+    stopEditing();
+  }
 
   render() {
     return (
@@ -37,7 +42,7 @@ class NoteEditor extends Component {
         />
         <div className="button-row">
           <input className="button" type="submit" value="Save" />
-          <button type="button">Cancel</button>
+          <button type="button" onClick={this.handleCancel}>Cancel</button>
         </div>
       </form>
     );

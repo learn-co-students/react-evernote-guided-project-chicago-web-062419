@@ -25,7 +25,7 @@ class Content extends Component {
         <NoteEditor
           currentNote={this.props.currentNote}
           saveEditedNote={this.props.saveEditedNote}
-          stopEditNote={this.stopEditNote}
+          stopEditNote={this.props.stopEditNote}
         />
       );
     } else if (this.isNotePopulated()) {

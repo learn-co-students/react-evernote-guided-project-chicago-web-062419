@@ -40,8 +40,7 @@ class NoteContainer extends Component {
       .then(resp => {
         return resp.json();
       })
-      .then(json => {
-        console.log(json);
+      .then(() => {
         this.setState({
           currentNote: {
             ...this.state.currentNote,
@@ -56,22 +55,20 @@ class NoteContainer extends Component {
 
   // POST fetch request for creating a new note
   createNewNote = () => {
+    const freshNote = { title: "Titulo Maximus", body: "Click -Edit- to add some LIFE to this poor, sorry note" };
     fetch("http://localhost:3000/api/v1/notes", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json"
       },
-      body: {
-        title: 'Title!',
-        body: 'Your text goes here...'
-      }
+      body: JSON.stringify(freshNote)
     })
       .then(resp => {
         return resp.json();
       })
       .then(() => {
-        this.setState({ currentNote: {} });
+        this.setState({ currentNote: freshNote });  // doing this will view the newly created note
         this.getNotes();
       });
   };
@@ -107,6 +104,7 @@ class NoteContainer extends Component {
             setSelectedNote={this.setSelectedNote}
             stopEditNote={this.stopEditNote}
             editingNote={this.state.editingNote}
+            createNewNote={this.createNewNote}
           />
           <Content
             currentNote={this.state.currentNote}
