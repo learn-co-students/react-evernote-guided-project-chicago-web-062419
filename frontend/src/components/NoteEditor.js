@@ -1,14 +1,48 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class NoteEditor extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: this.props.currentNote.title,
+      body: this.props.currentNote.body
+    };
+  }
+  handleSubmit = event => {
+    event.preventDefault();
+   // console.log(this.state);
+    const saveChanges = this.props.saveEditedNote // set this with deconstruction later?
+    saveChanges(this.state)
+  };
+
+  handleChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  };
+
+  handleCancel = () =>{
+    const stopEditing = this.props.stopEditNote;
+    stopEditing();
+  }
+
   render() {
     return (
-      <form className="note-editor">
-        <input type="text" name="title" />
-        <textarea name="body" />
+      <form className="note-editor" onSubmit={this.handleSubmit}>
+        <input
+          type="text"
+          name="title"
+          onChange={this.handleChange}
+          value={this.state.title}
+        />
+        <textarea
+          name="body"
+          onChange={this.handleChange}
+          value={this.state.body}
+        />
         <div className="button-row">
           <input className="button" type="submit" value="Save" />
-          <button type="button">Cancel</button>
+          <button type="button" onClick={this.handleCancel}>Cancel</button>
         </div>
       </form>
     );
