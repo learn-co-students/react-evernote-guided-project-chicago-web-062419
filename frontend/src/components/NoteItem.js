@@ -1,5 +1,6 @@
 import React from "react";
 
+
 const NoteItem = props => {
   const handleClick = () =>{
     props.stopEditNote()
