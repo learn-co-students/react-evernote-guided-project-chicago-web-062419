@@ -9,7 +9,11 @@ class NoteContainer extends Component {
     this.state = {
       notes: [],
       currentNote: {},
-      editingNote: false
+      editingNote: false ,
+      user:{  // this can be used later when logging in is a thing
+        id: 1 ,
+        name: 'flatironschool'
+      }
     };
   }
   // this should save the state between the sidebar and the content panels
@@ -55,7 +59,11 @@ class NoteContainer extends Component {
 
   // POST fetch request for creating a new note
   createNewNote = () => {
-    const freshNote = { title: "Titulo Maximus", body: "Click -Edit- to add some LIFE to this poor, sorry note" };
+    const freshNote = {
+      title: "Titulo Maximus",
+      body: "Click -Edit- to add some LIFE to this poor, sorry note",
+      user: this.state.user
+    };
     fetch("http://localhost:3000/api/v1/notes", {
       method: "POST",
       headers: {
@@ -68,7 +76,26 @@ class NoteContainer extends Component {
         return resp.json();
       })
       .then(() => {
-        this.setState({ currentNote: freshNote });  // doing this will view the newly created note
+        this.setState({ currentNote: freshNote }); // doing this will view the newly created note
+        this.getNotes();
+      });
+  };
+
+  deleteNote = () => {
+    console.log("Deleting Note");
+    fetch("http://localhost:3000/api/v1/notes/" + this.state.currentNote.id, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application.json",
+        Accept: "application.json"
+      }
+    })
+      .then(resp => {
+        console.log("Deleting note");
+        return resp.json();
+      })
+      .then(() => {
+        this.setState({ currentNote: {} });
         this.getNotes();
       });
   };
@@ -112,6 +139,7 @@ class NoteContainer extends Component {
             editingNote={this.state.editingNote}
             editNote={this.editNote}
             stopEditNote={this.stopEditNote}
+            deleteNote={this.deleteNote}
           />
         </div>
       </Fragment>

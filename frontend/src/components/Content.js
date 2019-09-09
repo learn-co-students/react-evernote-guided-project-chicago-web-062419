@@ -34,6 +34,7 @@ class Content extends Component {
         <NoteViewer
           currentNote={this.props.currentNote}
           editNote={this.props.editNote}
+          deleteNote={this.props.deleteNote}
         />
       );
     } else {
