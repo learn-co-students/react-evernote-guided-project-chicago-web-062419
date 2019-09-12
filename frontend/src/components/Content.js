@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import NoteEditor from './NoteEditor';
+// import NoteEditor from './NoteEditor';
 import NoteViewer from './NoteViewer';
 import Instructions from './Instructions';
+import NoteEditor from './NoteEditor';
 
 /*
   Advice: If you cannot figure out how to get this component to work,
@@ -11,17 +12,24 @@ import Instructions from './Instructions';
           refactor to get this Content component to work.
 */
 class Content extends Component {
+    
+
   renderContent = () => {
-    if (false) {
-      return <NoteEditor />;
-    } else if (false) {
-      return <NoteViewer />;
-    } else {
-      return <Instructions />;
-    }
+   return(
+           (this.props.clicked && <NoteEditor  
+                                      cancel={this.props.cancel} 
+                                      selected={this.props.select} 
+                                      edit={this.props.edit} 
+                                      save={this.props.save} />)
+      ||   ( this.props.select && <NoteViewer 
+                                      clickEdit={this.props.clickEdit} 
+                                      select={this.props.select} />)
+      ||                      <Instructions />)
+    
   }
 
   render() {
+    
     return (
       <div className='master-detail-element detail'>
         {this.renderContent()}
