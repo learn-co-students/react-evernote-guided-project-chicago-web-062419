@@ -1,11 +1,12 @@
 import React, { Fragment } from 'react';
 
+
 const NoteViewer = (props) => {
   return (
     <Fragment>
-      <h2>Title</h2>
-      <p>Body</p>
-      <button>Edit</button>
+      <h2>{props.selected.title}</h2>
+      <p>{props.selected.body}</p>
+      <button onClick={props.toggleEditClicked}>Edit</button>
     </Fragment>
   );
 }
